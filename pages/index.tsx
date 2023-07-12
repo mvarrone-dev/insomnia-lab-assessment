@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { CURRENCIES, DEFAULT_REFRESH_INTERVAL } from "@/utils/consts";
+import {
+  CURRENCIES,
+  DEFAULT_REFRESH_INTERVAL,
+  REFRESH_INTERVALS,
+} from "@/utils/consts";
 import RateCard from "@/components/RateCard";
 
 export default function Home() {
@@ -8,9 +12,13 @@ export default function Home() {
   const [refreshInterval, setRefreshInterval] = useState<number>(
     DEFAULT_REFRESH_INTERVAL
   );
-  const [hideCurrencies, setHideCurrencies] = useState<
-    Record<string, boolean>
-  >({});
+  const [hideCurrencies, setHideCurrencies] = useState<Record<string, boolean>>(
+    {}
+  );
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const timerID = setInterval(() => fetchData(), refreshInterval);
@@ -50,9 +58,9 @@ export default function Home() {
             onChange={(e) => setRefreshInterval(+e.target.value)}
             className="border border-gray-300 focus-within:outline-0 rounded px-2 py-1"
           >
-            <option value={5000}>5</option>
-            <option value={10000}>10</option>
-            <option value={15000}>15</option>
+            {REFRESH_INTERVALS.map((interval) => (
+              <option value={interval}>{interval / 1000}</option>
+            ))}
           </select>{" "}
           seconds.
         </div>

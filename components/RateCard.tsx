@@ -1,6 +1,5 @@
 import React from "react";
 import Spinner from "./Spinner";
-import { formatNumber } from "@/utils";
 
 interface RateCardProp {
   total: number;
