@@ -8,9 +8,14 @@ export default function Home() {
   const [refreshInterval, setRefreshInterval] = useState<number>(
     DEFAULT_REFRESH_INTERVAL
   );
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    const timerID = setInterval(() => fetchData(), refreshInterval);
+    return () => {
+      clearInterval(timerID);
+    };
+  }, [refreshInterval]);
+
   const fetchData = async () => {
     setIsLoading(true);
     const response = await fetch(
@@ -20,6 +25,7 @@ export default function Home() {
     setRateInfo(json.bpi);
     setIsLoading(false);
   };
+
   return (
     <div className="container mx-auto px-5">
       <h1 className="text-2xl font-bold lg:mt-12 mt-6 mb-8">
